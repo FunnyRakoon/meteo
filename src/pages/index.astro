@@ -1,7 +1,14 @@
 ---
+import createPlugin from "tailwindcss/plugin";
 import Layout from "../layouts/Layout.astro"
+
+const responseData = await fetch("https://randomuser.me/api/?results-5");
+const users = await responseData.json();
+
+console.log(users);
 ---
 
-<Layout>
-	<h1>text</h1>
+<Layout title="home">
+	<h1 class="text-3xl">welcome</h1>
+	<p>{users.results[0].name.first} {users.results[0].name.last}</p>
 </Layout>
