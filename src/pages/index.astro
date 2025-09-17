@@ -1,14 +1,69 @@
 ---
-import createPlugin from "tailwindcss/plugin";
-import Layout from "../layouts/Layout.astro"
+import Card from "../components/Card.astro";
+import Layout from "../layouts/Layout.astro";
 
-const responseData = await fetch("https://randomuser.me/api/?results-5");
+const responseData = await fetch("https://randomuser.me/api/?results=5000");
 const users = await responseData.json();
-
-console.log(users);
 ---
 
 <Layout title="home">
 	<h1 class="text-3xl">welcome</h1>
-	<p>{users.results[0].name.first} {users.results[0].name.last}</p>
+	<div class="m-5">
+			<div class="slider-viewport">
+				<div class="slider-track">
+					{
+						users.results.slice(0, 20).map((user: any) => (
+							<div class="slide-card">
+								<Card
+									first={user.name.first}
+									last={user.name.last}
+									genre={user.gender}
+									email={user.email}
+									phone={user.phone}
+									picture={user.picture.large}
+								/>
+							</div>
+						))
+					}
+					{
+						users.results.slice(0, 20).map((user: any) => (
+							<div class="slide-card">
+								<Card
+									first={user.name.first}
+									last={user.name.last}
+									genre={user.gender}
+									email={user.email}
+									phone={user.phone}
+									picture={user.picture.large}
+								/>
+							</div>
+						))
+					}
+				</div>
+			</div>
+	</div>
+				<style>
+					.slider-viewport {
+						width: 100%;
+						overflow: hidden;
+						position: relative;
+					}
+					.slider-track {
+						display: flex;
+						gap: 24px;
+						width: max-content;
+						animation: marquee 30s linear infinite;
+					}
+					.slide-card {
+						min-width: 300px;
+					}
+					@keyframes marquee {
+						0% {
+							transform: translateX(0);
+						}
+						100% {
+							transform: translateX(-20%);
+						}
+					}
+				</style>
 </Layout>
